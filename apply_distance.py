@@ -66,10 +66,10 @@ def process_distance(dp_data):
     coordinates = dp_data['coordinates']
 
     # #Major roads
-    # distance = check_distance('./atl_major_roads_shp/atl_major_roads_shp.shp', coordinates[1],coordinates[0])
+    # distance = check_distance('./Shape_file_1/atl_major_roads_shp.shp', coordinates[1],coordinates[0])
 
     #highways
-    distance = check_distance('./nhpn-stfips_13/NHPN_STFIPS_13.shp', coordinates[1],coordinates[0])
+    distance = check_distance('./Shape_file_2/NHPN_STFIPS_13.shp', coordinates[1],coordinates[0])
 
     
     # if distance < 10:
