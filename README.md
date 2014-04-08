@@ -4,13 +4,13 @@ Calculates distances of geo-coordinates [lat,long] of tweets from shapes present
 
 ## Requirements
 ===============
-1. [GDAL]https://pypi.python.org/pypi/GDAL/
+1. [GDAL](https://pypi.python.org/pypi/GDAL/)
 2. Multiprocessing
 
 ## Utilization
 ===============
 
-'''
+''' python
 python apply_distance.py <input_csv_file> <output_csv_file>
 '''
 
