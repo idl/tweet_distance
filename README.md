@@ -12,7 +12,7 @@ python apply_distance.py <shape_file> <shape_output_field> <input_csv_file> <out
 ```
 Example:
 ```
-python apply_distance.py ./Example_data/Shape_file_1/atl_major_roads_shp road_name ./Example_data/atl_input.csv ./atl_output.csv
+python apply_distance.py ./Example_data/Shape_file_1/atl_major_roads_shp.shp road_name ./Example_data/atl_input.csv ./atl_output.csv
 ```
 
 Input file format (input_csv_file):
