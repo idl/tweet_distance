@@ -26,13 +26,13 @@ from operator import itemgetter
 #     print "number of tweets: ", number_of_tweets
 #     print "number of tweets with low distance:", number_with_geo
 
-def check_distance(shape_f,lon1,lat1):
+def check_distance(shape_f,lon1,lat1,lname):
   driver = ogr.GetDriverByName('ESRI Shapefile')
   try:
     lineshp = driver.Open(shape_f, 0)
     linelyr = lineshp.GetLayer()
   except Exception as e:
-    print "got here", e.msg()
+    print e.msg()
 
 
   linefeat = linelyr.GetNextFeature()
@@ -42,12 +42,7 @@ def check_distance(shape_f,lon1,lat1):
 
   distlist = []
   while linefeat:
-    # change this according to shapefile definition
-    # # major roads
-    # st_name = linefeat.GetField("road_name")
-
-    # highways
-    st_name = linefeat.GetField('lname')
+    st_name = linefeat.GetField(lname)
     
     line_geom = linefeat.GetGeometryRef()
     dist = point_geom.Distance(line_geom) * 111111 
@@ -63,11 +58,7 @@ def process_distance(dp_data):
   try:
     coordinates = dp_data['coordinates']
 
-    # #Major roads
-    # distance = check_distance('./Shape_file_1/atl_major_roads_shp.shp', coordinates[1],coordinates[0])
-
-    #highways
-    distance = check_distance('./Shape_file_2/NHPN_STFIPS_13.shp', coordinates[1],coordinates[0])
+    distance = check_distance(dp_data['shp_file'], coordinates[1],coordinates[0],dp_data['lname'])
 
     
     # distance buffer set at 10. Adjust according to condition
@@ -79,9 +70,9 @@ def process_distance(dp_data):
   except:
     pass
 
-def read_input(ifile):
+def read_input(shp_file,lname,i_file):
   idata = []
-  with open(ifile, 'rU') as f:
+  with open(i_file, 'rU') as f:
     reader = csv.reader(f)
     next(reader, None)
     for row in reader:
@@ -90,7 +81,9 @@ def read_input(ifile):
         'coordinates':ast.literal_eval(row[1]),
         'tweet':row[2],
         'created_at':row[3],
-        'user':row[4]
+        'user':row[4],
+        'shp_file':shp_file,
+        'lname':lname
       }
       idata.append(dp_data)
   f.close()
@@ -110,14 +103,15 @@ def main():
   total = len(sys.argv)
 
   if total < 3:
-    print "Utilization: python apply_distance.py <input_csv_file> <output_csv_file>"
+    print "Utilization: python apply_distance.py <shape_file> <shape_output_field> <input_csv_file> <output_csv_file>"
     exit(0)
 
   pool = Pool(processes=cpu_count())
 
-  idata = read_input(str(sys.argv[1]))
+  idata = read_input(str(sys.argv[1]),str(sys.argv[2]),str(sys.argv[3]))
 
   num_tasks = len(idata)  
+
   # #async uncomment global and cb() functions
   # for each in idata:
   #   pool.apply_async(process_distance, [each], callback=cb)

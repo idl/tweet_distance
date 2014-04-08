@@ -8,7 +8,7 @@ Calculates distances of geo-coordinates [lat,long] of tweets from shapes present
 ## Utilization
 
 ```
-python apply_distance.py <input_csv_file> <output_csv_file>
+python apply_distance.py <shape_file> <shape_output_field> <input_csv_file> <output_csv_file>
 ```
 
 Input file format (input_csv_file):
