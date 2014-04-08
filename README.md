@@ -10,6 +10,10 @@ Calculates distances of geo-coordinates [lat,long] of tweets from shapes present
 ```
 python apply_distance.py <shape_file> <shape_output_field> <input_csv_file> <output_csv_file>
 ```
+Example:
+```
+python apply_distance.py ./Example_data/Shape_file_1/atl_major_roads_shp road_name ./Example_data/atl_input.csv ./atl_output.csv
+```
 
 Input file format (input_csv_file):
 
