@@ -137,7 +137,7 @@ def main():
 
   responses = [x for x in responses if x is not None]
 
-  idata = write_to_csv(str(sys.argv[2]),responses)
+  idata = write_to_csv(str(sys.argv[4]),responses)
 
 
 if __name__ == "__main__":
