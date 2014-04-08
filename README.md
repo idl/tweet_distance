@@ -16,3 +16,4 @@ Input file format:
 | ID | Geo |
 | -- | --- |
 | 1234 | [Lat,Long] |
+| 1234 | [Lat,Long] |
