@@ -9,13 +9,15 @@ Calculates distances of geo-coordinates [lat,long] of tweets from shapes present
 
 ## Utilization
 ===============
+
 '''
 python apply_distance.py <input_csv_file> <output_csv_file>
 '''
 
 Input file format:
-| ID       | Geo           | 
-| ------------- |:-------------:| 
-| 1234      | [Lat,Long] | 
+
+| ID | Geo | 
+| -- | --- | 
+| 1234 | [Lat,Long] | 
 
 
