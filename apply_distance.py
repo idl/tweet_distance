@@ -7,23 +7,24 @@ import time
 import sys
 from operator import itemgetter
 
-#globals, bad but effective :D
-number_of_tweets = 0
-number_with_geo = 0
-responses =[]
+# #globals, bad but effective. Used for async
+# number_of_tweets = 0
+# number_with_geo = 0
+# responses =[]
 
-def cb(result):
-  global responses
-  global number_of_tweets
-  global number_with_geo
-  number_of_tweets += 1
-  if result:
-    responses.append(result)
-    number_with_geo += 1
+# # cb() used with async
+# def cb(result):
+#   global responses
+#   global number_of_tweets
+#   global number_with_geo
+#   number_of_tweets += 1
+#   if result:
+#     responses.append(result)
+#     number_with_geo += 1
 
-  if number_of_tweets % 100 == 0:
-    print "number of tweets: ", number_of_tweets
-    print "number of tweets with low distance:", number_with_geo
+#   if number_of_tweets % 100 == 0:
+#     print "number of tweets: ", number_of_tweets
+#     print "number of tweets with low distance:", number_with_geo
 
 def check_distance(shape_f,lon1,lat1):
   driver = ogr.GetDriverByName('ESRI Shapefile')
@@ -41,22 +42,19 @@ def check_distance(shape_f,lon1,lat1):
 
   distlist = []
   while linefeat:
-    # change this according to shapefile defination
+    # change this according to shapefile definition
     # # major roads
     # st_name = linefeat.GetField("road_name")
 
     # highways
-    st_name = linefeat.GetField("lname")
+    st_name = linefeat.GetField('lname')
     
     line_geom = linefeat.GetGeometryRef()
     dist = point_geom.Distance(line_geom) * 111111 
-    
     distlist.append([st_name,dist])
-    #distlist.append(dist)
     linefeat.Destroy()
     linefeat = linelyr.GetNextFeature()
 
-  # distance = min(distlist) * 111111
   distance = min(distlist, key=lambda x: min(x[1:]))
   return distance
 
@@ -72,14 +70,11 @@ def process_distance(dp_data):
     distance = check_distance('./Shape_file_2/NHPN_STFIPS_13.shp', coordinates[1],coordinates[0])
 
     
-    # if distance < 10:
-    #   print dp_data
-    #   return dp_data
-
+    # distance buffer set at 10. Adjust according to condition
     if distance[1] < 10:
       dp_data['street_name'] = distance[0]
       dp_data['distance'] = distance[1]
-      print dp_data
+      #print dp_data #print to see the matching tweets
       return dp_data
   except:
     pass
@@ -123,7 +118,7 @@ def main():
   idata = read_input(str(sys.argv[1]))
 
   num_tasks = len(idata)  
-  # #async
+  # #async uncomment global and cb() functions
   # for each in idata:
   #   pool.apply_async(process_distance, [each], callback=cb)
   # pool.close()
@@ -147,8 +142,6 @@ def main():
   pool.close()
 
   responses = [x for x in responses if x is not None]
-
-  print responses
 
   idata = write_to_csv(str(sys.argv[2]),responses)
 
