@@ -13,6 +13,11 @@ python apply_distance.py <input_csv_file> <output_csv_file>
 
 Input file format:
 
+First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+
 | ID | Geo |
 | -- | --- |
 | 1234 | [Lat,Long] |
